@@ -1,32 +1,61 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <!-- header -->
+    <app-header :poinInfo="poiInfo"></app-header>
+
+    <!-- nav -->
+    <app-nav :commentNum="commentNum"></app-nav>
+
+    <!-- content -->
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+
   </div>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+  import Header from './components/header/Header';
+  import Nav from './components/nav/Nav'
+  export default {
+    components: {
+      "app-header": Header,
+      "app-nav": Nav
+    },
+    data () {
+      return {
+        poiInfo: {},
+        commentNum: 0
+      }
+    },
+    created () {
+      this.$axios.get('/api/goods').then(
+        res => {
+          if(res.data.code == 0) {
+            this.poiInfo = res.data.data.poi_info;
+          }
+        }
+      ).catch(
+        rej => {
+          console.log('请求goods错误');
+        }
+      )
 
-#nav {
-  padding: 30px;
-}
+      this.$axios.get('/api/ratings').then(
+        res => {
+          if(res.data.code == 0) {
+            this.commentNum = res.data.data.comment_num;
+          }
+        }
+      ).catch(
+        rej => {
+          console.log('请求ratings错误');
+        }
+      )
+    }
+  } 
+</script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+<style scoped>
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

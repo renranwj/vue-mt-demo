@@ -123,8 +123,7 @@ export default {
           this.poinInfo = res.data.data.poi_info;
           //   console.log(this.container, this.goods);
             // console.log(this.poinInfo)
-          // 虽然是在created里面执行的，但是这个方法，会在DOM渲染成功之后，才会执行的（这个就可
-          //以获取每个区域高度了
+          // 虽然是在created里面执行的，但是这个方法，会在DOM渲染成功之后，才会执行的（这个就可以获取每个区域高度了)
           this.$nextTick(() => {
             //   执行滚动方法
             this.initScroll();
